@@ -33,9 +33,9 @@ import java.time.format.DateTimeFormatter;
 @ComponentScan(basePackages = "com.vsware.libraries.redisreactivecache")
 public class RedisReactiveCacheConfig {
 
-    @Value("${spring.redis.date_format:dd-MM-yyyy}")
+    @Value("${spring.data.redis.date_format:dd-MM-yyyy}")
     public String DEFAULT_DATE_FORMAT;
-    @Value("${spring.redis.time_format:HH:mm:ss}")
+    @Value("${spring.data.redis.time_format:HH:mm:ss}")
     public String DEFAULT_TIME_FORMAT;
 
     @Bean

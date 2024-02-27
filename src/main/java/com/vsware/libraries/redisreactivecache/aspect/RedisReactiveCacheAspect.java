@@ -44,7 +44,7 @@ public class RedisReactiveCacheAspect {
         Method method = aspectUtils.getMethod(joinPoint);
         Class<?> returnType = method.getReturnType();
         RedisReactiveCacheAdd annotation = method.getAnnotation(RedisReactiveCacheAdd.class);
-        String key = aspectUtils.getKeyVal(joinPoint, annotation.key(), annotation.useArgsHash());
+        String key = aspectUtils.getKeyVal(joinPoint, annotation.collection(), annotation.key(), annotation.useArgsHash());
         log.info("Evaluated Redis cacheKey: " + key);
         if (returnType.isAssignableFrom(Mono.class)) {
             return methodMonoResponseToCache(joinPoint, key);
@@ -68,9 +68,9 @@ public class RedisReactiveCacheAspect {
         Method method = aspectUtils.getMethod(joinPoint);
         Class<?> rawReturnType = method.getReturnType();
         RedisReactiveCacheGet annotation = method.getAnnotation(RedisReactiveCacheGet.class);
-        String key = aspectUtils.getKeyVal(joinPoint, annotation.key(), annotation.useArgsHash());
+        String key = aspectUtils.getKeyVal(joinPoint, annotation.collection(), annotation.key(), annotation.useArgsHash());
         TypeReference typeRefForMapper = aspectUtils.getTypeReference(method);
-        log.info("Evaluated Redis cacheKey: " + key);
+        //        log.info("Evaluated Redis cacheKey: " + key);
         if (rawReturnType.isAssignableFrom(Mono.class)) {
             return reactiveRedisTemplate.opsForValue().get(key).map(cacheResponse ->
                             objectMapper.convertValue(cacheResponse, typeRefForMapper))
@@ -100,7 +100,7 @@ public class RedisReactiveCacheAspect {
         Method method = aspectUtils.getMethod(joinPoint);
         Class<?> returnType = method.getReturnType();
         RedisReactiveCacheUpdate annotation = method.getAnnotation(RedisReactiveCacheUpdate.class);
-        String key = aspectUtils.getKeyVal(joinPoint, annotation.key(), annotation.useArgsHash());
+        String key = aspectUtils.getKeyVal(joinPoint, annotation.collection(), annotation.key(), annotation.useArgsHash());
         log.info("Evaluated Redis cacheKey: " + key);
         if (returnType.isAssignableFrom(Mono.class)) {
             reactiveRedisTemplate.opsForValue().delete(key).subscribe();
@@ -125,7 +125,7 @@ public class RedisReactiveCacheAspect {
         Method method = aspectUtils.getMethod(joinPoint);
         Class<?> returnType = method.getReturnType();
         RedisReactiveCacheEvict annotation = method.getAnnotation(RedisReactiveCacheEvict.class);
-        String key = aspectUtils.getKeyVal(joinPoint, annotation.key(), annotation.useArgsHash());
+        String key = aspectUtils.getKeyVal(joinPoint, annotation.collection(), annotation.key(), annotation.useArgsHash());
         log.info("Evaluated Redis cacheKey: " + key);
         reactiveRedisTemplate.opsForValue().delete(key).subscribe();
         return joinPoint.proceed(joinPoint.getArgs());

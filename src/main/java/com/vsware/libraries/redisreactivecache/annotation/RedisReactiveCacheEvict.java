@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RedisReactiveCacheEvict {
+    String collection() default "";
     String key() default "";
     boolean useArgsHash() default false;
 }

@@ -10,10 +10,14 @@ spring:
   config:
     activate:
       on-profile: lib
-  redis:
-    host: "localhost"
-    port: 6379
-    client-name: ${spring.application.name}
-    client-type: lettuce #provide reactive connection
-    date_format: "dd-MM-yyyy"
-    time_format: "HH:mm:ss"
+  data:
+    redis:
+      host: "localhost"
+      port: 6379
+      database:
+      username:
+      password:
+      client-name: ${spring.application.name}
+      client-type: lettuce #provide reactive connection
+      date_format: "dd-MM-yyyy"
+      time_format: "HH:mm:ss"

@@ -29,13 +29,23 @@ public class YourServiceClass {
         //yourReactiveRepository.save(new DBModel(name));
     }
 
-    @RedisReactiveCacheAdd(key = "names", useArgsHash = true) //CacheKey will be: names_<hash_of_args>
+    @RedisReactiveCacheAdd(key = "names", useArgsHash = true) // CacheKey = names:<hash_of_args>
     public Flux<TestTable> storeMultipleInDb(List<String> names) {
         //your reactive call to DB
     }
 
-    @RedisReactiveCacheGet(key = "#name") //CacheKey will be: value of name argument
+    @RedisReactiveCacheGet(key = "#name") // CacheKey = value of name argument
     public Mono<TestTable> getFromDb(String name) {
+        //your reactive call to DB
+    }
+    
+    @RedisReactiveCacheGet(collection="Users", key = "#name") // CacheKey = Users:<value of name>
+    public Mono<TestTable> getFromUser(String name) {
+        //your reactive call to DB
+    }
+    
+    @RedisReactiveCacheGet(collection="Users", key="#firstName + '_' + #lastName") // CacheKey = Users:<value of firstName>_<value of lastName>
+    public Mono<TestTable> getUser(String firstName, String lastName) {
         //your reactive call to DB
     }
 
@@ -83,6 +93,9 @@ spring:
   redis:
     host: <your_redis_host>
     port: <your_redis_port>
+    database: <your_database>
+    username: <your_username>
+    password: <your_password>
     #etc...
     
     #Additional properties for this library 
